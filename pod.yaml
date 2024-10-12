@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: writer-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: writer
+  template:
+    metadata:
+      labels:
+        app: writer
+    spec:
+      containers:
+      - name: writer-container
+        image: docker.io/kushalshukla/writer
+        imagePullPolicy: IfNotPresent  # Replace with your image
+        volumeMounts:
+        - name: shared-storage
+          mountPath: /mnt/data
+      volumes:
+      - name: shared-storage
+        persistentVolumeClaim:
+          claimName: shared-pvc
+
